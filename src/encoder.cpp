@@ -3,8 +3,9 @@
 //
 #include "encoder.h"
 #include "source.h"
+#include "spookyhash.h"
 using namespace std;
-Encoder::Encoder(int k, int v, int c, int l, int vMask):k(k), v(v), c(c), l(l) {
+Encoder::Encoder(int k, int v, int c, int l):k(k), v(v), c(c), l(l) {
     if(v >= 32)
     {
         v_mask = UINT32_MAX;
@@ -20,13 +21,16 @@ Encoder::Encoder() {
     v_mask = 0;
 }
 
-void Encoder::encode(std::string &message) {
+void Encoder::encode(std::string &message, std::vector<unsigned int> &symbols) {
     vector<unsigned int> devidedMessage;
+    vector<unsigned int> tempSymbols;
+
     devidemessage2int32(devidedMessage, message);
-    vector<unsigned long long> longIntsForHash;
-    generateSpinalsAndRNGS(longIntsForHash);
+    generateSpinalsAndRNGS(devidedMessage);
+    generateSymbols(tempSymbols);
 
 }
+// 将message分割为长度为K的多段信息，放入数组中保存
 
 bool Encoder::devidemessage2int32(std::vector<unsigned int> &devidedMessage, std::string &message) {
     int pointerByte, pointerDevide;
@@ -65,11 +69,79 @@ bool Encoder::devidemessage2int32(std::vector<unsigned int> &devidedMessage, std
     return true;
 }
 
-void Encoder::generateSpinalsAndRNGS(std::vector<unsigned long long> &longIntsForHash) {
-    
+void Encoder::generateSpinalsAndRNGS(std::vector<unsigned int> &devidedMessage) {
+    vector<unsigned int>spinalValues;
+    unsigned char temp_bytes[8];
+    SpookyHash s;
+    RNG* temp_rng;
+    unsigned int temp_spinal_value;
+
+    temp_spinal_value = ORISPINAL;
+    spinalValues.push_back(temp_spinal_value);
+    for(int i = 0; i < devidedMessage.size(); i++)
+    {
+        TwoInt32ToBytes(spinalValues[i], devidedMessage[i], temp_bytes);
+        temp_spinal_value = s.Hash32(temp_bytes, 8, 0) & this->v_mask;
+        spinalValues.push_back(temp_spinal_value);
+        temp_rng = new RNG(this->c, temp_spinal_value);
+        (this->RNGlist).push_back(temp_rng);
+    }
+
+}
+// 将两个32位整形拼成8个Bytes的数组，其中data1存于数组前4个元素，data2存于数组后4元素
+void Encoder::TwoInt32ToBytes(unsigned int data1, unsigned int data2, unsigned char bytes[])
+{
+    for(int i = 0; i < 8; i++)
+    {
+        if(i < 4)
+            bytes[i] = UINT8_MAX & (data1>>(8*i));
+        else
+            bytes[i] = UINT8_MAX & (data2 >> (8*(i - 4)));
+    }
 }
 
+void Encoder::generateSymbols(std::vector<unsigned int> &symbols) {
+    int temp_num = this->RNGlist.size();
+    vector<unsigned int> tempSymbols;
+    for (int i = 0; i < (this->l * (temp_num)); i++)
+    {
+        tempSymbols.push_back(this->RNGlist[i % temp_num]->RNGnext());
+    }
+    tempSymbolsToSymbols(tempSymbols,symbols);
+}
 
+void Encoder::tempSymbolsToSymbols(std::vector<unsigned int> &tempSymbols, std::vector<unsigned int> &symbols) {
+    unsigned int temp_symbol, symbol = 0;
+    unsigned int temp_symbols_pointer = 0, symbols_pointer = 0;
+    for(int i = 0; i < (tempSymbols.size() * this->c) + 1; i++)
+    {
+        if(i != 0 && i % c == 0)
+        {
+            temp_symbols_pointer++;
+        }
+        if(i != 0 && i % (sizeof (unsigned int) * 8) == 0 )
+        {
+            symbols.push_back(symbol);
+            symbol = 0;
+        }
+        //边界条件
+        if(i == tempSymbols.size() * this->c)
+        {
+            symbols.push_back(symbol);
+            symbol = 0;
+            break;
+        }
+        if(tempSymbols[temp_symbols_pointer] & (1 << i % this->c))
+        {
+            symbol |= (1 << i % (sizeof(unsigned int) *8));
+        }
+        else
+        {
+            symbol |= 0;
+        }
+
+    }
+}
 
 vector<uint8_t>& Encoder::getSymbols() {
     return symbols;

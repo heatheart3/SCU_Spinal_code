@@ -22,14 +22,19 @@ class Encoder
     public:
     Encoder();
 
-    Encoder(int k, int v, int c, int l, int vMask);
+    Encoder(int k, int v, int c, int l);
 
-    void encode(std::string & message);
+    void encode(std::string & message, std::vector<unsigned int> &symbols);
 
     bool devidemessage2int32(std::vector<unsigned int> &devidedMessage, std::string& message);
 
-    void generateSpinalsAndRNGS(std::vector<unsigned long long>& longIntsForHash);
+    void generateSpinalsAndRNGS(std::vector<unsigned int>& devidedMessage);
 
+    void TwoInt32ToBytes(unsigned int data1, unsigned int data2 ,unsigned char bytes[]);
+
+    void generateSymbols(std::vector<unsigned int> &symbols);
+
+    void tempSymbolsToSymbols(std::vector<unsigned int> &tempSymbols, std::vector<unsigned int> &symbols);
 
     std::vector<uint8_t>& getSymbols();
 

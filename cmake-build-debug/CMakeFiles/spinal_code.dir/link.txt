@@ -1,0 +1,3 @@
+C:\Users\lenovo\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\231.8109.174\bin\cmake\win\x64\bin\cmake.exe -E rm -f CMakeFiles\spinal_code.dir/objects.a
+C:\Users\lenovo\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\231.8109.174\bin\mingw\bin\ar.exe qc CMakeFiles\spinal_code.dir/objects.a @CMakeFiles\spinal_code.dir\objects1
+C:\Users\lenovo\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\231.8109.174\bin\mingw\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\spinal_code.dir/objects.a -Wl,--no-whole-archive -o spinal_code.exe -Wl,--out-implib,libspinal_code.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\spinal_code.dir\linkLibs.rsp

@@ -9,23 +9,23 @@ class RNG{
 
     private:
         int c;
-        int seed;
+        unsigned int seed;
         int mask;
         std::default_random_engine e;
     public:
         RNG();
-        RNG(int c, int seed);
-        int RNGnext();
+        RNG(int c, unsigned int seed);
+        unsigned int RNGnext();
 
     int getC() const;
 
-    int getSeed() const;
+    unsigned int getSeed() const;
 
     int getMask() const;
 
     void setC(int c);
 
-    void setSeed(int seed);
+    void setSeed(unsigned int seed);
 
     void setMask(int mask);
 

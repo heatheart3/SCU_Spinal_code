@@ -1,4 +1,4 @@
-C:\Users\lenovo\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\231.8109.174\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/lenovo/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/231.8109.174/bin/ninja/win/x64/ninja.exe -G Ninja -S "C:\Users\lenovo\Desktop\code\C++\spinal code" -B "C:\Users\lenovo\Desktop\code\C++\spinal code\cmake-build-debug"
+C:\Users\lenovo\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\231.8109.174\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S "C:\Users\lenovo\Desktop\code\c++\spinal code" -B "C:\Users\lenovo\Desktop\code\c++\spinal code\cmake-build-debug"
 -- The C compiler identification is GNU 11.2.0
 -- The CXX compiler identification is GNU 11.2.0
 -- Detecting C compiler ABI info
@@ -13,4 +13,4 @@ C:\Users\lenovo\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\231.8109.174\bin
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/lenovo/Desktop/code/C++/spinal code/cmake-build-debug
+-- Build files have been written to: C:/Users/lenovo/Desktop/code/c++/spinal code/cmake-build-debug

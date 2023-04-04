@@ -6,5 +6,5 @@
 #define SPINAL_CODE_SOURCE_H
 #include <iostream>
 #include <climits>
-#define s0 0
+#define ORISPINAL 0
 #endif //SPINAL_CODE_SOURCE_H
