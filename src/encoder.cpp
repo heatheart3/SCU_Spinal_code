@@ -29,12 +29,38 @@ void Encoder::encode(std::string &message) {
 }
 
 bool Encoder::devidemessage2int32(std::vector<unsigned int> &devidedMessage, std::string &message) {
+    int pointerByte, pointerDevide;
+    pointerDevide = 0;
+    pointerByte = 0;
+    unsigned int extraction = 1;
+    unsigned int temp_unit = 0;
     unsigned int temp;
-    for (int i = 0; i < message.length(); i++)
+    for(int i = 0; i <= message.length()*8; i++)
     {
-        temp = UINT32_MAX;
-        temp &= int(message[i]);
-        devidedMessage.push_back(temp);
+        if(i % 8 == 0 && i != 0)
+        {
+            pointerByte++;
+        }
+        if(i % k == 0 && i != 0)
+        {
+            devidedMessage.push_back(temp_unit);
+            temp_unit = 0;
+            if(i == message.length()*8)
+            {
+                break;
+            }
+        }
+        temp = 1 << (i % 8);
+        if((message[pointerByte] & temp) == (temp))
+        {
+            extraction = (1 << (i % k));
+        }
+        else
+        {
+            extraction = 0;
+        }
+
+        temp_unit |= extraction;
     }
     return true;
 }
